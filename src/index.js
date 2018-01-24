@@ -2,25 +2,43 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    };
-  }
-  render() {
+function Square(props){
+{/* This is a functional component and only consists of a render,
+  so therefore doesn't need to extend React.Component and it
+  can just be a function, not a class */}
     return (
-      <button className="square" onClick={() => alert('click')}>
-        {this.props.value}
+      {/* This button sets the current state when clicked */},
+      <button className="square" onClick={props.onClick}>
+        {props.value}
       </button>
     );
-  }
 }
 
 class Board extends React.Component {
+  constructor(props) {
+    {/* Constructor subclass to set it's inital state to contain an array
+    with 9 nulls, corresponding to the 9 squares */}
+    super(props);
+    this.state = {
+      squares:Array(9).fill(null),
+    };
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice();
+    squares[i] = 'X';
+    this.setState({squares: squares});
+
+  }
+
   renderSquare(i) {
-    return <Square value={i} />;
+    {/*Passing down two props from Board to Square*/}
+    return (
+      <Square 
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)} 
+      />
+    );
   }
 
   render() {
